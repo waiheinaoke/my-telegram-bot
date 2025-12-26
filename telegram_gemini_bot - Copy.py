@@ -1,4 +1,4 @@
-import os
+AIzaSyBS32n9ZPpzuaf2ZzyvHVjui89C6TJAK58 os
 import logging
 from telegram.ext import Application, MessageHandler, filters
 from google import genai
@@ -9,7 +9,7 @@ from google.genai import types as genai_types
 # ==========================================================
 # သင်ပေးထားသော Token အသစ်နှင့် Gemini Key
 BOT_TOKEN = "7022247360:AAGIUApvre2OkNcuHXvQLRPGjOCjmwrwIDw" 
-GEMINI_API_KEY = "AIzaSyBS32n9ZPpzuaf2ZzyvHVjui89C6TJAK58" 
+GEMINI_API_KEY = "AIzaSyBolky-yf8ARHWUss-sfE7rYn_dw6AAFqg" 
 # ==========================================================
 
 logging.basicConfig(
@@ -67,5 +67,6 @@ def main() -> None:
 if __name__ == '__main__':
     main()
     
+
 
 
