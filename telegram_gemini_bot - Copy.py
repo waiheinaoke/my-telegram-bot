@@ -7,7 +7,7 @@ from telegram.ext import ContextTypes
 from google.genai import types as genai_types
 
 # ==========================================================
-# သင်ပေးထားသော Token အသစ်နှင့် API Key အသစ်
+# Token နှင့် API Key အသစ်များ
 BOT_TOKEN = "7022247360:AAGIUApvre2OkNcuHXvQLRPGjOCjmwrwIDw" 
 GEMINI_API_KEY = "AIzaSyBolky-yf8ARHWUss-sfE7rYn_dw6AAFqg" 
 # ==========================================================
@@ -29,10 +29,11 @@ if GEMINI_API_KEY:
 async def gemini_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not client or not update.message.text: return
     try:
-        # Bot အမည်ကို YuKi V77 သို့ သတ်မှတ်ထားပါသည်
+        # Bot အမည်ကို YuKi V77 သို့ သတ်မှတ်ခြင်း
         system_instruction = "သင်၏အမည်မှာ YuKi V77 ဖြစ်သည်။"
         config = genai_types.GenerateContentConfig(system_instruction=system_instruction)
         
+        # Model Name ကို 'gemini-1.5-flash' ဟုသာ ရေးရမည် (models/ မပါရ)
         response = client.models.generate_content(
             model='gemini-1.5-flash', 
             contents=update.message.text,
@@ -52,4 +53,4 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-    nder
+    
