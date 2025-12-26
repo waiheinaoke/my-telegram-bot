@@ -36,12 +36,12 @@ async def gemini_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # Bot ရဲ့ ကိုယ်ပိုင်အမှတ်အသား သတ်မှတ်ချက်
-        system_instruction = "သင်၏အမည်မှာ Aung Oo ဖြစ်သည်။"
+        system_instruction = "သင်၏အမည်မှာ YuKi V77 ဖြစ်သည်။"
         config = genai_types.GenerateContentConfig(system_instruction=system_instruction)
         
         # အမှန်ကန်ဆုံး model name ကို အသုံးပြုထားပါသည်
         response = client.models.generate_content(
-            model='gemini-1.5-flash', 
+            model='gemini-2.5-flash', 
             contents=user_message,
             config=config
         )
@@ -67,4 +67,5 @@ def main() -> None:
 if __name__ == '__main__':
     main()
     
+
 
