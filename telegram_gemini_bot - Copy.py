@@ -7,7 +7,7 @@ from telegram.ext import ContextTypes
 from google.genai import types as genai_types
 
 # ==========================================================
-# Token နှင့် API Key အသစ်များ
+# သင်ပေးထားသော Token အသစ်နှင့် API Key အသစ်
 BOT_TOKEN = "7022247360:AAGIUApvre2OkNcuHXvQLRPGjOCjmwrwIDw" 
 GEMINI_API_KEY = "AIzaSyBolky-yf8ARHWUss-sfE7rYn_dw6AAFqg" 
 # ==========================================================
@@ -27,29 +27,37 @@ if GEMINI_API_KEY:
         logger.error(f"❌ Gemini Client Error: {e}")
 
 async def gemini_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not client or not update.message.text: return
+    if not client or not update.message or not update.message.text: return
     try:
-        # Bot အမည်ကို YuKi V77 သို့ သတ်မှတ်ခြင်း
+        # Bot အမည်ကို YuKi V77 သို့ သတ်မှတ်ထားပါသည်
         system_instruction = "သင်၏အမည်မှာ YuKi V77 ဖြစ်သည်။"
         config = genai_types.GenerateContentConfig(system_instruction=system_instruction)
         
-        # Model Name ကို 'gemini-1.5-flash' ဟုသာ ရေးရမည် (models/ မပါရ)
+        # Model Name ကို 'gemini-1.5-flash' ဟုသာ ရေးရမည်
         response = client.models.generate_content(
             model='gemini-1.5-flash', 
             contents=update.message.text,
             config=config
         )
-        await update.message.reply_text(response.text)
+        if response and response.text:
+            await update.message.reply_text(response.text)
     except Exception as e:
         logger.error(f"❌ API Error: {e}")
-        await update.message.reply_text("ခေတ္တစောင့်ဆိုင်းပေးပါ။")
+        # Error တက်ပါက သုံးစွဲသူအား အကြောင်းကြားရန်
+        if update.message:
+            await update.message.reply_text("ခေတ္တစောင့်ဆိုင်းပေးပါ။")
 
 def main() -> None:
     if not BOT_TOKEN: return
     application = Application.builder().token(BOT_TOKEN).build()
+    
+    # Message Handler ထည့်သွင်းခြင်း
     application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), gemini_chat))
+    
     logger.info("🚀 Bot လည်ပတ်နေပါပြီ...")
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    
+    # Render တွင် Conflict မဖြစ်စေရန် run_polling ကို အသုံးပြုပါသည်
+    application.run_polling(allowed_updates=Update.ALL_TYPES, drop_pending_updates=True)
 
 if __name__ == '__main__':
     main()
